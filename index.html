@@ -1,35 +1,327 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>EXE Bot — Home</title>
+  <meta charset="UTF-8" />
+  <title>EXE-Bot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body{background:#000;color:#fff;font-family:system-ui,Arial;margin:0;padding:40px;text-align:center}
-    .navbar{display:flex;justify-content:center;align-items:center;gap:20px;background:#111;padding:14px;font-size:16px;position:relative;margin:-40px -40px 40px -40px}
-    .navbar .invite-btn-left{position:absolute;left:20px;background:#7AA95C;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:600}
-    .tab-btn{background:#fff;color:#000;padding:8px 14px;border-radius:6px;text-decoration:none;font-weight:600}
-    .invite-btn{background:#7AA95C;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:600}
-    .container{padding:40px}
-    h1{margin-bottom:20px}
-    footer{text-align:center;margin-top:40px;color:#777}
+    :root {
+      --green: #00ff00;
+      --green-soft: rgba(0,255,0,0.15);
+      --bg: #000000;
+      --accent: #33FF00;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Courier New", monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--green);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      border-bottom: 2px solid var(--green);
+    }
+
+    header .logo {
+      font-weight: bold;
+    }
+
+    header nav a {
+      color: var(--green);
+      text-decoration: none;
+      margin-left: 12px;
+      cursor: pointer;
+    }
+
+    header nav a.button {
+      padding: 4px 10px;
+      border: 1px solid var(--green);
+      border-radius: 4px;
+      background: var(--green);
+      color: #000;
+      font-weight: bold;
+    }
+
+    /* Main terminal */
+    .terminal {
+      margin: 0 20px 20px 20px;
+      border: 2px solid var(--green);
+      padding: 30px;
+      position: relative;
+      overflow-y: auto;
+      max-height: 70vh;
+      line-height: 1.6;
+      background: radial-gradient(circle at center, var(--green-soft), transparent 70%);
+    }
+
+    .binary {
+      position: absolute;
+      top: 10px;
+      font-size: 14px;
+      line-height: 1.4;
+      opacity: 0.6;
+    }
+
+    .binary.left { left: 10px; }
+    .binary.right { right: 10px; text-align: right; }
+
+    .title {
+      text-align: center;
+      font-size: clamp(48px, 10vw, 140px);
+      font-weight: bold;
+      letter-spacing: 1;
+      margin: 0;
+      text-shadow: 0 0 15px var(--green);
+    }
+
+    .ascii {
+      white-space: pre;
+      text-align: center;
+      font-size: 10px;
+      line-height: 1;
+      opacity: 0.85;
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    /* Tabs */
+    .tab-content {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Shop */
+    .shop-item {
+      width: 200px;
+      margin: 20px auto;
+      background: #111;
+      border: 2px dashed var(--accent);
+      padding: 15px;
+    }
+
+    /* Support */
+    .support-item {
+      margin: 20px 0;
+      font-size: 16px;
+    }
+
+    .support-item img {
+      width: 30px;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      border-top: 2px solid var(--green);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    footer a { color: var(--green); text-decoration: none; }
+
+    /* BSOD */
+    #bsod {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #0000AA;
+      color: white;
+      font-family: monospace;
+      padding: 40px;
+      z-index: 9999;
+      white-space: pre-wrap;
+      cursor: pointer;
+    }
+
+/* ===== MOBILE ONLY FIX ===== */
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  header {
+    flex-wrap: wrap;
+    text-align: center;
+    gap: 10px;
+  }
+
+  header nav {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .terminal {
+    margin: 10px;
+    padding: 15px;
+    max-height: none;
+  }
+
+  .ascii {
+    font-size: 7px;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .ascii {
+    font-size: 6px;
+  }
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
   </style>
 </head>
 <body>
-  <div class="navbar">
-    <a class="invite-btn-left" href="https://discord.com/oauth2/authorize?client_id=1441494069594427512&permissions=8&integration_type=0&scope=bot">Inviter le Bot</a>
-    <a class="tab-btn" href="index.html">Accueil</a>
-    <a class="tab-btn" href="privacy.html">Privacy Policy</a>
-    <a class="tab-btn" href="terms.html">Terms of Service</a>
-  </div>
 
-  <div class="container">
-    <h1>Bienvenue sur EXE Bot</h1>
+<header>
+  <div class="logo">La EXE</div>
+<nav>
+  / <a href="https://la-exe.github.io/EXE/">Retour</a>
+  / <a href="index.html">Bot Discord</a>
+  / <a href="privacy.html">Privacy Policy</a>
+  / <a href="terms.html">Terms of Service</a>
+</nav>
+</header>
+
+<div id="accueil" class="tab-content active">
+  <div class="terminal">
+
+
+
+    <div class="ascii">
+                                                                                                                                                
+                                                                                                                                                
+EEEEEEEEEEEEEEEEEEEEEEXXXXXXX       XXXXXXXEEEEEEEEEEEEEEEEEEEEEE                 BBBBBBBBBBBBBBBBB        OOOOOOOOO     TTTTTTTTTTTTTTTTTTTTTTT
+E::::::::::::::::::::EX:::::X       X:::::XE::::::::::::::::::::E                 B::::::::::::::::B     OO:::::::::OO   T:::::::::::::::::::::T
+E::::::::::::::::::::EX:::::X       X:::::XE::::::::::::::::::::E                 B::::::BBBBBB:::::B  OO:::::::::::::OO T:::::::::::::::::::::T
+EE::::::EEEEEEEEE::::EX::::::X     X::::::XEE::::::EEEEEEEEE::::E                 BB:::::B     B:::::BO:::::::OOO:::::::OT:::::TT:::::::TT:::::T
+  E:::::E       EEEEEEXXX:::::X   X:::::XXX  E:::::E       EEEEEE                   B::::B     B:::::BO::::::O   O::::::OTTTTTT  T:::::T  TTTTTT
+  E:::::E                X:::::X X:::::X     E:::::E                                B::::B     B:::::BO:::::O     O:::::O        T:::::T        
+  E::::::EEEEEEEEEE       X:::::X:::::X      E::::::EEEEEEEEEE                      B::::BBBBBB:::::B O:::::O     O:::::O        T:::::T        
+  E:::::::::::::::E        X:::::::::X       E:::::::::::::::E    ---------------   B:::::::::::::BB  O:::::O     O:::::O        T:::::T        
+  E:::::::::::::::E        X:::::::::X       E:::::::::::::::E    -:::::::::::::-   B::::BBBBBB:::::B O:::::O     O:::::O        T:::::T        
+  E::::::EEEEEEEEEE       X:::::X:::::X      E::::::EEEEEEEEEE    ---------------   B::::B     B:::::BO:::::O     O:::::O        T:::::T        
+  E:::::E                X:::::X X:::::X     E:::::E                                B::::B     B:::::BO:::::O     O:::::O        T:::::T        
+  E:::::E       EEEEEEXXX:::::X   X:::::XXX  E:::::E       EEEEEE                   B::::B     B:::::BO::::::O   O::::::O        T:::::T        
+EE::::::EEEEEEEE:::::EX::::::X     X::::::XEE::::::EEEEEEEE:::::E                 BB:::::BBBBBB::::::BO:::::::OOO:::::::O      TT:::::::TT      
+E::::::::::::::::::::EX:::::X       X:::::XE::::::::::::::::::::E                 B:::::::::::::::::B  OO:::::::::::::OO       T:::::::::T      
+E::::::::::::::::::::EX:::::X       X:::::XE::::::::::::::::::::E                 B::::::::::::::::B     OO:::::::::OO         T:::::::::T      
+EEEEEEEEEEEEEEEEEEEEEEXXXXXXX       XXXXXXXEEEEEEEEEEEEEEEEEEEEEE                 BBBBBBBBBBBBBBBBB        OOOOOOOOO           TTTTTTTTTTT      
+                                                                                                                                                
+                                                                                                                                                
+                                                                                                                                                
+                                                                                                                                                
+                                                                                                                                                
+                                                                                                                                                
+                                                                                                                                                
+    </div>
+
+    <h2>Bienvenue sur EXE Bot</h2>
     <p>Un bot Discord amusant et polyvalent,</p>
     <p>offrant également des fonctionnalités d'administration pour votre serveur.</p>
-    <a class="invite-btn" href="https://discord.com/oauth2/authorize?client_id=1441494069594427512&permissions=8&integration_type=0&scope=bot">Inviter le Bot</a>
-  </div>
+<p>
+  <a href="https://discord.com/oauth2/authorize?client_id=1441494069594427512&permissions=8&integration_type=0&scope=bot"
+     target="_blank"
+     style="color: blue;">
+    Inviter le Bot
+  </a>
+</p>
 
-  <footer>© 2025 - 2025 EXE - All Rights Reserved.</footer>
+  </div>
+</div>
+
+<div id="rejoins" class="tab-content"> class="tab-content active">
+  <h2>Rejoins-nous</h2>
+  <p>T’es fou ? T’as des skills ?</p>
+  <p>Bienvenue.</p>
+</div>
+
+<div id="rejoins" class="tab-content">
+  <h2>Rejoins-nous</h2>
+  <p><a href="https://discord.gg/QhYcGtTykJ" target="_blank">Discord</a></p>
+</div>
+
+<div id="shop" class="tab-content">
+  <h2>Shop</h2>
+  <div class="shop-item">
+    <p><strong>Service Personnalisé</strong></p>
+    <p>Prix : 1€ - 8€</p>
+    <p>ID : 1</p>
+  </div>
+</div>
+
+<div id="cheat" class="tab-content">
+  <h2>Cheats</h2>
+  <p>Disponible bientôt – Discord only</p>
+</div>
+
+<div id="soutien" class="tab-content">
+  <h2>Soutenir la EXE</h2>
+  <div class="support-item">BTC : bc1qz87u4hr6pv8yzq96h6vjcutz3nrgw06gkdxzvw</div>
+  <div class="support-item">ETH : 0x4bb895c76738B4B9B42A86B9F55C0dD3aBb0CF40</div>
+</div>
+
+<footer>
+  <div>Bienvenue dans ma fête</div>
+  <div>© 2025 - 2026 EXE</div>
+</footer>
+
+
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+$(document).keydown(function (event) {
+    if (event.keyCode == 123) { // Prevent F12
+        return false;
+    } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I        
+        return false;
+    }
+});
+
+window.addEventListener('keydown', function(event) {
+    if (event.code === 'F12') {
+        event.preventDefault();
+    }
+});   
+</script>
+
 </body>
 </html>
